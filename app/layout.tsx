@@ -8,16 +8,16 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default:siteConfig.name,
-    template:`%s | ${siteConfig.name}`
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  icons:[
+  icons: [
     {
-      url:"/logo.png",
-      href:"/logo.png"
-    }
-  ]
+      url: "/logo.png",
+      href: "/logo.png",
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -27,13 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <>
-
-        {children}
-        </>
-        
-        </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
