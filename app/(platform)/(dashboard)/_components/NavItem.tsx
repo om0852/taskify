@@ -10,6 +10,7 @@ import React from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import path from "path";
+import { Skeleton } from "@/components/ui/skeleton";
 export type Organization = {
   id: string;
   slug: string;
@@ -22,12 +23,12 @@ interface NavItemProps {
   organization: Organization;
   onExpand: (id: string) => void;
 }
-const NavItem: React.FC<NavItemProps> = ({
+export const NavItem = ({
   onExpand,
   organization,
   isActive,
   isExpanded,
-}) => {
+}:NavItemProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const routes = [
@@ -91,4 +92,14 @@ const NavItem: React.FC<NavItemProps> = ({
   );
 };
 
-export default NavItem;
+
+NavItem.Skeleton = function NavItemSkeleton(){
+  return(
+    <div className="flex items-center gap-x-2">
+      <div className="h-10 w-10 relative shrink-0">
+        <Skeleton className="w-full h-full absolute"></Skeleton>
+      </div>
+      <Skeleton className="h-10 w-full"/>
+    </div>
+  )
+}
