@@ -8,6 +8,7 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
+import NavItem, { Organization } from "./NavItem";
 interface sidebarProps {
   storageKey?: string;
 }
@@ -71,7 +72,7 @@ const Sidebar: React.FC<sidebarProps> = ({
         className="space-y-2"
       >
         {userMemberships?.data.map(({ organization }) => {
-          return <NavItem key={organization.id} isActive={activeOrganization?.id===organization.id} isExpanded={expanded[organization.id]} organization={organization} onExpand={onExpand} />;
+          return <NavItem key={organization.id} isActive={activeOrganization?.id===organization.id} isExpanded={expanded[organization.id]} organization={organization as Organization} onExpand={onExpand} />;
         })}
       </Accordion>
     </>
