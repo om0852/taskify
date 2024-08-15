@@ -1,19 +1,27 @@
-import { OrganizationSwitcher } from "@clerk/nextjs";
-import { auth } from "@clerk/nextjs/server";
-import React from "react";
 
-const Page = () => {
-  async function create(formData:FormData){
-    "use server"
-    const title = formData.get("title")
-    console.log("i am trigger")
-  }
+import { create } from "@/actions/create-board";
+import { Button } from "@/components/ui/button";
+import { db } from "@/lib/db";
+import React from "react";
+import Board from "./_components/Board";
+import Form from "./form";
+
+const Page = async() => {
+  const boards = await db.board.findMany();
   return (
-    <div>
-      <form action={create}>
-        <input id="title" name="title" required placeholder="Enter a board title" className="border-black border p-1"/>
-      </form>
-          </div>
+    <div className="flex flex-col space-y-4">
+      <Form/>
+      <div className="space-y-2">
+        
+        {boards && boards.map((data)=>{
+          return(
+            <>
+          <Board key={data.id} title={data.title} id={data.id}/>
+            </>
+          )
+        })}
+      </div>
+    </div>
   );
 };
 
