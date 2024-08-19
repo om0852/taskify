@@ -18,8 +18,8 @@ export const FormInput=({errors}:FormInputProps)=>{
           disabled={pending}
           className="border-black border p-1"
         />
-         {errors?.title && errors?.title.map((error:string)=>(
-          <p className='text-rose-500'>{error}</p>
+         {errors?.title && errors?.title.map((error:string,index)=>(
+          <p key={index} className='text-rose-500'>{error}</p>
         ))}
         </>
     )
