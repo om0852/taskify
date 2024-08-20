@@ -1,4 +1,4 @@
-import { deleteBoard } from "@/actions/delete-board";
+import { deleteBoard } from "@/actions/create-board/delete-board";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import DeleteButton from "./delete-button";
