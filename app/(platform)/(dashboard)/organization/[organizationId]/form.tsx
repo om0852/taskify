@@ -2,10 +2,10 @@
 import { Button } from '@/components/ui/button'
 import React from 'react'
 import { useFormState } from 'react-dom'
-import { FormInput } from './form-input'
 import SubmitButton from './submit-button'
 import { createBoard } from '@/actions/create-board'
 import { useAction } from '@/hooks/use-action'
+import { FormInput } from '@/components/form/form-input'
 
 const Form = () => {
   const {execute,error,FieldErrors,isLoading}= useAction(createBoard,{
@@ -23,7 +23,7 @@ execute({title});
     
     <form action={onsubmit}>
       <div className='flex flex-col space-y-2'>
-       <FormInput errors={FieldErrors}/>
+       <FormInput id='title' label='Board Title'  errors={FieldErrors}/>
        <SubmitButton/>
           </div>
       </form>
