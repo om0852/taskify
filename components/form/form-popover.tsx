@@ -4,6 +4,7 @@ import { useAction } from "@/hooks/use-action";
 import React from "react";
 import { FormInput } from "./form-input";
 import FormSubmit from "./form-submit";
+import {toast} from "sonner";
 import {
   Popover,
   PopoverClose,
@@ -27,8 +28,10 @@ const FormPopover = ({
   const {execute,FieldErrors}=useAction(createBoard,{
     onSuccess(data) {
       console.log({data});
+      toast.success("Board Created")
     },
     onError(error) {
+      toast.error("Invalid attempt")
       console.log(error)
     },
   })

@@ -8,6 +8,7 @@ import { createSafeAction } from "./create-safe-action";
 import { CreateBoard } from "./schema";
 // import { getAuth } from "@clerk/nextjs/server"; // Import getAuth from the server module
 import { auth, useAuth } from "@clerk/nextjs";
+import { error } from "console";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId } = auth();
@@ -20,7 +21,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   let board;
   try {
     //CREATE A BOARD IN DB
-    
+    // throw new Error("a")
     board = await db.board.create({
       data: {
         title,
