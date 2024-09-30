@@ -13,6 +13,7 @@ import {
 } from "../ui/popover";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
+import { FormPicker } from "./form-picker";
 interface FormPopoverProps {
   children: React.ReactNode;
   side?: "left" | "right" | "top" | "bottom";
@@ -54,6 +55,7 @@ const FormPopover = ({
         <PopoverClose asChild><Button className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600 " variant={"ghost"}><X className="h-4 w-4"/></Button></PopoverClose>
         <form action={onSumbit} className="space-y-4">
           <div className="space-y-4">
+            <FormPicker id="image" errors={FieldErrors}/>
             <FormInput id="title" label="Board title" type="text" errors={FieldErrors}/>
           </div>
           <FormSubmit className="w-full">
