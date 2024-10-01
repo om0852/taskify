@@ -25,7 +25,7 @@ const FormSubmit = ({
   children,
   disabled,
   className,
-  variant = "default", // Set a default value for variant
+  variant = "destructive", // Set a default value for variant
 }: FormSubmitProps) => {
   const { pending } = useFormStatus();
   return (

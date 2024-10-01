@@ -11,20 +11,39 @@ import { auth, useAuth } from "@clerk/nextjs";
 import { error } from "console";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId } = auth();
-  if (!userId) {
+  const { userId, orgId } = auth();
+  if (!userId || !orgId) {
     return {
       error: "Unauthorized",
     };
   }
-  const { title } = data;
+  const { title, image } = data;
   let board;
+  const [imageId, imageThumbUrl, imageFullUrl, imageLinkHTML, imageUserName] =
+    image.split("|");
+  if (
+    !imageFullUrl ||
+    !imageLinkHTML ||
+    !imageThumbUrl ||
+    !imageUserName ||
+    !imageId
+  ) {
+    return {
+      error: "Missing Fields. Failed to create board",
+    };
+  }
   try {
     //CREATE A BOARD IN DB
     // throw new Error("a")
     board = await db.board.create({
       data: {
         title,
+        orgId,
+        imageId,
+        imageFullUrl,
+        imageThumbUrl,
+        imageUserName,
+        imageLinkHTML,
       },
     });
   } catch (error) {

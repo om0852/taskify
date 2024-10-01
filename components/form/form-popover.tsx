@@ -1,7 +1,7 @@
 "use client";
 import { createBoard } from "@/actions/create-board";
 import { useAction } from "@/hooks/use-action";
-import React from "react";
+import React, { ElementRef, useRef } from "react";
 import { FormInput } from "./form-input";
 import FormSubmit from "./form-submit";
 import {toast} from "sonner";
@@ -26,10 +26,12 @@ const FormPopover = ({
   sideOffset = 0,
   align,
 }: FormPopoverProps) => {
+  const closeRef = useRef<ElementRef<"button">>(null);
   const {execute,FieldErrors}=useAction(createBoard,{
     onSuccess(data) {
       console.log({data});
       toast.success("Board Created")
+      closeRef.current?.click();
     },
     onError(error) {
       toast.error("Invalid attempt")
@@ -39,7 +41,7 @@ const FormPopover = ({
   const onSumbit=(formData:FormData)=>{
     const title = formData.get("title") as string;
     const image = formData.get("image") as string
-    // execute({title});
+    execute({title,image});
     // console.log(formData)
   }
   return (
@@ -54,7 +56,7 @@ const FormPopover = ({
         <div className="text-sm font-medium text-center text-neutral-600 pb-4">
           Create board
         </div>
-        <PopoverClose asChild><Button className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600 " variant={"ghost"}><X className="h-4 w-4"/></Button></PopoverClose>
+        <PopoverClose ref={closeRef} asChild><Button className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600 " variant={"ghost"}><X className="h-4 w-4"/></Button></PopoverClose>
         <form action={onSumbit} className="space-y-4">
           <div className="space-y-4">
             <FormPicker id="image" errors={FieldErrors}/>
