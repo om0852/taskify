@@ -1,5 +1,5 @@
 export const defaultImages = [
-  [
+  
     {
       id: "MPaHCR6D7Po",
       slug: "pink-petaled-flower-MPaHCR6D7Po",
@@ -1087,5 +1087,4 @@ export const defaultImages = [
       views: 4928676,
       downloads: 26650,
     },
-  ],
-];
+  ]

@@ -38,7 +38,9 @@ const FormPopover = ({
   })
   const onSumbit=(formData:FormData)=>{
     const title = formData.get("title") as string;
-    execute({title});
+    const image = formData.get("image") as string
+    // execute({title});
+    // console.log(formData)
   }
   return (
     <Popover>
