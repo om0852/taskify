@@ -37,4 +37,4 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   revalidatePath(`/board/${boardId}`);
   return {data:list};
 };
-export const ppdateList = createSafeAction(UpdateList,handler);
+export const updateList = createSafeAction(UpdateList,handler);
