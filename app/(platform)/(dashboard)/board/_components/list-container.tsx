@@ -1,16 +1,18 @@
-import { ListWithCards } from '@/types';
-import { List } from '@prisma/client'
-import React from 'react'
-interface ListContainerProps{
-    data:ListWithCards[];
-    boardId:string;
+import { ListWithCards } from "@/types";
+import { List } from "@prisma/client";
+import React from "react";
+import ListForm from "./list-form";
+interface ListContainerProps {
+  data: ListWithCards[];
+  boardId: string;
 }
-const ListContainer = ({boardId,data}:ListContainerProps) => {
+const ListContainer = ({ boardId, data }: ListContainerProps) => {
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <ol>
+        <ListForm/>
+      <div className="flex-shrink-0 w-1"></div>
+    </ol>
+  );
+};
 
-export default ListContainer
+export default ListContainer;
