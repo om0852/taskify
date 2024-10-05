@@ -10,7 +10,7 @@ import { useAction } from "@/hooks/use-action";
 import { Separator } from "@/components/ui/separator";
 import { List } from "@prisma/client";
 import { MoreHorizontal, X } from "lucide-react";
-import React from "react";
+import React, { ElementRef, useRef } from "react";
 import { deleteList } from "@/actions/delete-list";
 import { toast } from "sonner";
 interface ListOptionsProps {
@@ -18,13 +18,18 @@ interface ListOptionsProps {
   onAddCard: () => void;
 }
 const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
+    const closeRef =useRef<ElementRef<"button">>(null);
   const { execute: executeDelete } = useAction(deleteList, {
     onSuccess(data) {
       toast.success(`List "${data.title}" deleted`);
+      closeRef.current?.click();
     },
     onError(error) {
       toast.error(error);
+      closeRef.current?.click();
+
     },
+
   });
 
   const onDelete = (formData: FormData) => {
@@ -46,7 +51,7 @@ const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
           <div className="text-sm font-medium text-center text-neutral-600 pb-4">
             List Action
           </div>
-          <PopoverClose asChild>
+          <PopoverClose ref={closeRef} asChild>
             <Button
               className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600"
               variant={"ghost"}
