@@ -13,6 +13,7 @@ import { MoreHorizontal, X } from "lucide-react";
 import React, { ElementRef, useRef } from "react";
 import { deleteList } from "@/actions/delete-list";
 import { toast } from "sonner";
+import { copyList } from "@/actions/copy-list";
 interface ListOptionsProps {
   data: List;
   onAddCard: () => void;
@@ -31,12 +32,28 @@ const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
     },
 
   });
+  const { execute: executeCopy } = useAction(copyList, {
+    onSuccess(data) {
+      toast.success(`List "${data.title}" copied`);
+      closeRef.current?.click();
+    },
+    onError(error) {
+      toast.error(error);
+      closeRef.current?.click();
+
+    },
+
+  });
 
   const onDelete = (formData: FormData) => {
     const id = formData.get("id") as string;
     const boardId = formData.get("boardId") as string;
-    alert(boardId)
     executeDelete({id,boardId});
+  };
+  const onCopy = (formData: FormData) => {
+    const id = formData.get("id") as string;
+    const boardId = formData.get("boardId") as string;
+    executeCopy({id,boardId});
   };
 
   return (
@@ -68,7 +85,7 @@ const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
           </Button>
           <Separator />
 
-          <form>
+          <form action={onCopy}>
             <input hidden name="id" id="id" value={data.id} />
             <input hidden name="boardId" id="boardId" value={data.boardId} />
             <FormSubmit
