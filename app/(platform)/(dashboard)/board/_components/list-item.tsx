@@ -3,6 +3,8 @@ import { ListWithCards } from '@/types'
 import React, { ElementRef, useRef, useState } from 'react'
 import ListHeader from './list-header';
 import CardForm from './card-form';
+import { cn } from '@/lib/utils';
+import CardItem from './card-item';
 interface ListItemProps{
     data:ListWithCards;
     index:number
@@ -24,6 +26,17 @@ const ListItem = ({data,index}:ListItemProps) => {
     <li key={index} className='shrink-0 h-full w-[272px] select-none mr-1'>
       <div className='w-full rounded-md bg-[#f1f2f4] shadow-orange-50-md pb-2'>
         <ListHeader onAddCard={enableEditing} data={data}/>
+        <ol className={cn("mx-1 px-1 py-0.5 flex flex-col gap-y-2 ",data.cards.length>0?"mt-2":"mt-0")}>
+{
+  data.cards.map((data,index)=>{
+    return(
+      <>
+      <CardItem index={index} key={data.id} data={data}/>
+      </>
+    )
+  })
+}
+        </ol>
         <CardForm listId={data.id} ref={textareaRef} isEditing={isEditing} enableEditing={enableEditing} disabledEditing={disabledEditing}/>
       </div>
     </li>
