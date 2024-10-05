@@ -1,8 +1,18 @@
+import { createCard } from "@/actions/create-card";
 import FormSubmit from "@/components/form/form-submit";
 import { FormTextarea } from "@/components/form/form-textarea";
 import { Button } from "@/components/ui/button";
+import { useAction } from "@/hooks/use-action";
 import { Plus, X } from "lucide-react";
-import React, { forwardRef } from "react";
+import { useParams } from "next/navigation";
+import React, {
+  ElementRef,
+  forwardRef,
+  KeyboardEventHandler,
+  useRef,
+} from "react";
+import { toast } from "sonner";
+import { useEventListener, useOnClickOutside } from "usehooks-ts";
 interface cardFormProps {
   listId: string;
   enableEditing: () => void;
@@ -14,12 +24,53 @@ const CardForm = forwardRef<HTMLTextAreaElement, cardFormProps>(
     { listId, isEditing, enableEditing, disabledEditing }: cardFormProps,
     ref
   ) => {
+    const params = useParams();
+
+    const formRef = useRef<ElementRef<"form">>(null);
+
+    const { execute, FieldErrors } = useAction(createCard,{
+        onSuccess:(data)=>{
+
+            toast.success(`Card "${data.title}" created`);
+            formRef.current?.reset();
+        },
+        onError(error) {
+            toast.error(error)
+        },
+    });
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        disabledEditing();
+      }
+    };
+
+    useOnClickOutside(formRef, disabledEditing);
+    useEventListener("keydown", onKeyDown);
+
+    const onTextareaKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (
+      e
+    ) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        formRef.current?.requestSubmit();
+      }
+    };
+
+
+    const onSumbit = (formData:FormData)=>{
+        const title = formData.get("title") as string;
+        const boardId =params.boardId as string;
+        const listId = formData.get("listId") as string;
+        execute({title,boardId,listId})
+    }
     if (isEditing) {
       return (
-        <form className="m-1 py-0.5 px-1 space-y-4">
+        <form ref={formRef} action={onSumbit} className="m-1 py-0.5 px-1 space-y-4">
           <FormTextarea
             id="title"
-            onKeyDown={() => {}}
+            onKeyDown={onTextareaKeyDown}
+            errors={FieldErrors}
             ref={ref}
             placeholder="Enter a title for this card"
           />
