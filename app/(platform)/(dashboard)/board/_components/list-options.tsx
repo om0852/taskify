@@ -6,14 +6,34 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useAction } from "@/hooks/use-action";
+import { Separator } from "@/components/ui/separator";
 import { List } from "@prisma/client";
 import { MoreHorizontal, X } from "lucide-react";
 import React from "react";
+import { deleteList } from "@/actions/delete-list";
+import { toast } from "sonner";
 interface ListOptionsProps {
   data: List;
   onAddCard: () => void;
 }
 const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
+  const { execute: executeDelete } = useAction(deleteList, {
+    onSuccess(data) {
+      toast.success(`List "${data.title}" deleted`);
+    },
+    onError(error) {
+      toast.error(error);
+    },
+  });
+
+  const onDelete = (formData: FormData) => {
+    const id = formData.get("id") as string;
+    const boardId = formData.get("boardId") as string;
+    alert(boardId)
+    executeDelete({id,boardId});
+  };
+
   return (
     <div>
       <Popover>
@@ -41,11 +61,29 @@ const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
           >
             Add Card..
           </Button>
+          <Separator />
+
           <form>
             <input hidden name="id" id="id" value={data.id} />
             <input hidden name="boardId" id="boardId" value={data.boardId} />
-            <FormSubmit             className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
- variant={"ghost"}>Copy List</FormSubmit>
+            <FormSubmit
+              className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
+              variant={"ghost"}
+            >
+              Copy List
+            </FormSubmit>
+          </form>
+          <Separator />
+
+          <form action={onDelete}>
+            <input hidden name="id" id="id" value={data.id} />
+            <input hidden name="boardId" id="boardId" value={data.boardId} />
+            <FormSubmit
+              className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
+              variant={"ghost"}
+            >
+              Delete List
+            </FormSubmit>
           </form>
         </PopoverContent>
       </Popover>
