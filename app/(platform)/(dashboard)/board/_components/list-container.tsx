@@ -9,6 +9,7 @@ import { describe } from "node:test";
 import { useAction } from "@/hooks/use-action";
 import { updateListOrder } from "@/actions/update-list-order";
 import { toast } from "sonner";
+import { updateCardOrder } from "@/actions/update-card-order";
 
 interface ListContainerProps {
   data: ListWithCards[];
@@ -25,6 +26,14 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
 const ListContainer = ({ boardId, data }: ListContainerProps) => {
   const [orderData, setOrderData] = useState(data);
 const {execute:executeUpdateListOrder}=useAction(updateListOrder,{
+  onSuccess(){
+    toast.success("list reorder")
+  },
+  onError(error){
+    toast.error(error);
+  }
+});
+const {execute:executeCardOrder}=useAction(updateCardOrder,{
   onSuccess(){
     toast.success("list reorder")
   },
@@ -85,6 +94,7 @@ const {execute:executeUpdateListOrder}=useAction(updateListOrder,{
         sourceList.cards =reorderedCards;
 
         setOrderData(newOrderData)
+        executeCardOrder({items:newOrderData,boardId});
       }
       else{
         const [movedCard]= sourceList.cards.splice(source.index,1);
@@ -100,6 +110,8 @@ const {execute:executeUpdateListOrder}=useAction(updateListOrder,{
           card.order=index;
         })
         setOrderData(newOrderData)
+        executeCardOrder({items:newOrderData,boardId});
+
         //Trigger server actiojn
       }
     }

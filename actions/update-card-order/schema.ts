@@ -1,4 +1,3 @@
-import BoardId from "@/app/(platform)/(dashboard)/board/[boardId]/page";
 import {z} from "zod";
 export const UpdateCardOrder =z.object({
     items:z.array(z.object({
