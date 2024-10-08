@@ -35,7 +35,7 @@ const {execute:executeUpdateListOrder}=useAction(updateListOrder,{
 });
 const {execute:executeCardOrder}=useAction(updateCardOrder,{
   onSuccess(){
-    toast.success("list reorder")
+    toast.success("card reorder")
   },
   onError(error){
     toast.error(error);
@@ -94,7 +94,7 @@ const {execute:executeCardOrder}=useAction(updateCardOrder,{
         sourceList.cards =reorderedCards;
 
         setOrderData(newOrderData)
-        executeCardOrder({items:newOrderData,boardId});
+        executeCardOrder({items:reorderedCards,boardId});
       }
       else{
         const [movedCard]= sourceList.cards.splice(source.index,1);
@@ -110,7 +110,7 @@ const {execute:executeCardOrder}=useAction(updateCardOrder,{
           card.order=index;
         })
         setOrderData(newOrderData)
-        executeCardOrder({items:newOrderData,boardId});
+        executeCardOrder({items:destList.cards,boardId});
 
         //Trigger server actiojn
       }
