@@ -11,9 +11,9 @@ const ModalProvider = () => {
         return null;
     }
   return (
-    <>
+    <div>
       <CardModal/>
-    </>
+    </div>
   )
 }
 
