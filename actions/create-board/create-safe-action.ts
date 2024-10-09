@@ -1,7 +1,7 @@
 import {Schema, z} from "zod"
 
 export type FieldError<T>={
-    [K in keyof T]?:string
+    [K in keyof T]?:string[];
 
 }
 export type ActionState<TInput,TOuput>={
