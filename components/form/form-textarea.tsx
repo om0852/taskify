@@ -12,7 +12,7 @@ interface FormTextareaProps {
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
-  errors?: Record<string, string[] | undefined>;
+  errors?: Record<string, string[] >| undefined;
   className?: string;
   onBlur?: () => void;
   onClick?: () => void;

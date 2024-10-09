@@ -48,6 +48,8 @@ const Description = ({ data }: DescriptionProps) => {
         queryKey: ["card", data.id],
       });
       toast.success(`Card "${data.title}" updated!`);
+      disabledEditing();
+
     },
     onError(error) {
       toast.error(error);
@@ -75,7 +77,6 @@ const Description = ({ data }: DescriptionProps) => {
               className="w-full mt-2"
               placeholder="Add more description..,"
               defaultValue={data.description || undefined}
-              errors={FieldErrors}
             />
             <div className="flex items-center gap-x-2">
               <FormSubmit>Save</FormSubmit>
