@@ -6,8 +6,7 @@ import { auth } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
 import { createSafeAction } from "../create-board/create-safe-action";
 import { DeleteCard } from "./schema";
-import { title } from "process";
-import { Copy } from "lucide-react";
+
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
