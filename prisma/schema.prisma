@@ -42,14 +42,40 @@ model List {
 }
 
 model Card {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   title       String
   order       Int
-  description String? @db.Text
-  listId    String
-  list      List     @relation(fields: [listId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  description String?  @db.Text
+  listId      String
+  list        List     @relation(fields: [listId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([listId])
+}
+
+enum ACTION {
+  CREATE
+  DELETE
+  UPDATE
+}
+
+enum ENTITY_TYPE {
+  BOARD
+  LIST
+  CARD
+}
+
+model AuditLog {
+  id         String      @id @default(uuid())
+  orgId      String
+  action     ACTION
+  entityId   String
+  entityType ENTITY_TYPE
+  userId     String
+  userImage  String      @db.Text
+  userName   String      @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
