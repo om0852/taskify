@@ -6,11 +6,11 @@ export const generateLogMessage = (log:AuditLog)=>{
 
     switch(action){
         case ACTION.CREATE:
-            return `created ${entityType.toLowerCase()} "${entityTitle}"`
+            return ` created ${entityType.toLowerCase()} "${entityTitle}"`
         case ACTION.UPDATE:
-            return `update ${entityType.toLowerCase()} "${entityTitle}"`
+            return ` update ${entityType.toLowerCase()} "${entityTitle}"`
         case ACTION.DELETE:
-            return `delete ${entityType.toLowerCase()} "${entityTitle}"`
+            return ` delete ${entityType.toLowerCase()} "${entityTitle}"`
         default:
             return `unkown action ${entityType.toLowerCase()} "${entityTitle}"`
     }

@@ -1,3 +1,4 @@
+import ActivityItem from "@/components/activity-item";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AuditLog } from "@prisma/client";
 import { ActivityIcon } from "lucide-react";
@@ -6,7 +7,7 @@ interface ActivityProps {
   items: AuditLog[];
 }
 const Activity = ({ items }: ActivityProps) => {
-    // console.log(items)
+  // console.log(items)
   return (
     <div className="flex items-start gap-x-3 w-full">
       <ActivityIcon className="w-5 h-5 text-neutral-500 mt-0.5" />
@@ -14,7 +15,7 @@ const Activity = ({ items }: ActivityProps) => {
         <p className="font-semibold text-neutral-700 mb-2">Activity</p>
         <ol className="mt-2 space-y-4">
           {items.map((item) => (
-            <p>{item.entityTitle}</p>
+            <ActivityItem key={item.id} data={item} />
           ))}
         </ol>
       </div>
