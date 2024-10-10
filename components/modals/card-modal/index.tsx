@@ -19,7 +19,7 @@ const CardModal = () => {
     queryFn: () => fetcher(`/api/card/${id}`),
   });
   const { data: auditLogData } = useQuery<AuditLog>({
-    queryKey: ["card", id],
+    queryKey: ["card-logs", id],
     queryFn: () => fetcher(`/api/card/${id}/logs`),
   });
   return (
@@ -38,7 +38,7 @@ const CardModal = () => {
               {!auditLogData ? (
                 <Activity.Skeleton />
               ) : (
-                <Activity item={auditLogData} />
+                <Activity items={auditLogData} />
               )}
             </div>
           </div>
