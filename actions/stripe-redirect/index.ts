@@ -52,7 +52,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
                 name: "Taskify Pro",
                 description: "Unlimited boards for your organization",
               },
-              unit_amount: 2000,
+              unit_amount: 200,
               recurring: {
                 interval: "month",
               },
@@ -62,6 +62,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         ],
         metadata: {
           orgId,
+          test:"test"
         },
       });
       url = stripeSession.url || "";

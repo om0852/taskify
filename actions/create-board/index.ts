@@ -12,6 +12,7 @@ import { error } from "console";
 import { createAuditLog } from "@/lib/create-audit-log";
 import { ACTION, ENTITY_TYPE } from "@prisma/client";
 import { hasAvailableCount, incrementAvailableCount } from "@/lib/orgLimit";
+import { checkSubscription } from "@/lib/subscription";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -20,11 +21,13 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       error: "Unauthorized",
     };
   }
-  const cancount=hasAvailableCount();
-  if(!cancount){
-return{
-  error:"You have reached your limit of free boards.please upgrade to create more."
-}
+  const cancount = hasAvailableCount();
+  const isPro = await checkSubscription();
+  if (!cancount && !isPro) {
+    return {
+      error:
+        "You have reached your limit of free boards.please upgrade to create more.",
+    };
   }
   const { title, image } = data;
   let board;
@@ -55,13 +58,15 @@ return{
         imageLinkHTML,
       },
     });
-    await incrementAvailableCount();
+    if (!isPro) {
+      await incrementAvailableCount();
+    }
     await createAuditLog({
-      entityTitle:board.title,
-      entityId:board.id,
-      entityType:ENTITY_TYPE.BOARD,
-      action:ACTION.CREATE
-    })
+      entityTitle: board.title,
+      entityId: board.id,
+      entityType: ENTITY_TYPE.BOARD,
+      action: ACTION.CREATE,
+    });
   } catch (error) {
     return {
       error: "Failed to create",
