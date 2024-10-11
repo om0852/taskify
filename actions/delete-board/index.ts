@@ -10,8 +10,10 @@ import { redirect } from "next/navigation";
 import { createAuditLog } from "@/lib/create-audit-log";
 import { ACTION, ENTITY_TYPE } from "@prisma/client";
 import { descreaseAvailableCount } from "@/lib/orgLimit";
+import { checkSubscription } from "@/lib/subscription";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
+  const isPro =await checkSubscription();
   const { userId, orgId } = auth();
   if (!userId || !orgId) {
     return {
@@ -33,7 +35,9 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       entityType:ENTITY_TYPE.BOARD,
       action:ACTION.DELETE
     })
-    await descreaseAvailableCount();
+    if(!isPro){
+      await descreaseAvailableCount();
+    }
   } catch (e) {
     return {
       error: "Failed to delete",
