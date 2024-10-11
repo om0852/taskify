@@ -7,6 +7,8 @@ import { revalidatePath } from "next/cache";
 import { createSafeAction } from "../create-board/create-safe-action";
 import { CopyList } from "./schema";
 import { title } from "process";
+import { createAuditLog } from "@/lib/create-audit-log";
+import { ACTION, ENTITY_TYPE } from "@prisma/client";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -59,6 +61,12 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         cards:true
       }
     });
+    await createAuditLog({
+      entityTitle:list.title,
+      entityId:list.id,
+      entityType:ENTITY_TYPE.LIST,
+      action:ACTION.CREATE
+    })
   } catch (e) {
     return {
       error: "Failed to copy",
