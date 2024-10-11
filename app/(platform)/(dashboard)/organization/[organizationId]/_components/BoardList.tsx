@@ -6,6 +6,8 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getAvailableCount } from "@/lib/orgLimit";
+import { MAX_FREE_BOARDS } from "@/constants/board";
 export const BoardList = async() => {
   const {orgId}=auth();
   if(!orgId){
@@ -19,6 +21,8 @@ export const BoardList = async() => {
       createdAt:"desc"
     }
   })
+
+  const availableCount = await getAvailableCount();
   return (
     <div className="space-y-4">
       <div className="flex-items-center font-semibold text-lg text-neutral-700">
@@ -37,7 +41,7 @@ export const BoardList = async() => {
             role="button"
           >
             <p className="text-sm">Create new board</p>
-            <span className="text-sm">5 remaining</span>
+            <span className="text-sm">{`${MAX_FREE_BOARDS-availableCount}`} remaining</span>
             <Hint
               sideOffset={40}
               description="Free workspaces can have up to 5 open boards.For unlimited board upgrade this work space"
