@@ -15,6 +15,7 @@ import { Button } from "../ui/button";
 import { X } from "lucide-react";
 import { FormPicker } from "./form-picker";
 import { useRouter } from "next/navigation";
+import { useProModal } from "@/hooks/use-pro-modal";
 interface FormPopoverProps {
   children: React.ReactNode;
   side?: "left" | "right" | "top" | "bottom";
@@ -28,6 +29,7 @@ const FormPopover = ({
   align,
 }: FormPopoverProps) => {
   const router = useRouter();
+  const proModal = useProModal();
   const closeRef = useRef<ElementRef<"button">>(null);
   const {execute,FieldErrors}=useAction(createBoard,{
     onSuccess(data) {
@@ -38,7 +40,7 @@ const FormPopover = ({
     },
     onError(error) {
       toast.error("Invalid attempt")
-      console.log(error)
+      proModal.onOpen();
     },
   })
   const onSumbit=(formData:FormData)=>{
